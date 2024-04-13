@@ -3,9 +3,8 @@ import axios from "axios";
 import "./Member.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-const Updatemember = () => {
-  let navigate = useNavigate();
-
+const UpdateMember = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [memberName, setMemberName] = useState("");
@@ -31,44 +30,45 @@ const Updatemember = () => {
       contactNo,
     };
 
-    await axios.put(
-      `http://localhost:8080/api/member/update/${id}`,
-      memberDetails
-    );
+    await axios.put(`http://localhost:8080/api/member/update/${id}`, memberDetails);
     navigate("/members");
   };
 
-  const loadMember = async () => {
-    const result = await axios.get(`http://localhost:8080/api/member/${id}`);
-
-    setMemberName(result.data.memberName);
-    setDob(result.data.dob);
-    setCity(result.data.city);
-    setState(result.data.state);
-    setEmailId(result.data.emailId);
-    setContactNo(result.data.contactNo);
-    setUsername(result.data.username);
-    setPassword(result.data.password);
-    setPlanName(result.data.plan.planName);
-    setInsuredAmount(result.data.plan.insuredAmount);
-  };
-
   useEffect(() => {
+    const loadMember = async () => {
+      try {
+        const result = await axios.get(`http://localhost:8080/api/member/${id}`);
+        const { data } = result;
+        setMemberName(data.memberName);
+        setDob(data.dob);
+        setCity(data.city);
+        setState(data.state);
+        setEmailId(data.emailId);
+        setContactNo(data.contactNo);
+        setUsername(data.username);
+        setPassword(data.password);
+        setPlanName(data.plan.planName);
+        setInsuredAmount(data.plan.insuredAmount);
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    };
+
     loadMember();
-  }, []);
+  }, [id]);
 
   return (
     <div className="container">
       <h4>Update Member</h4>
       <hr className="bg-success border-2 border-top border-success" />
-      <Link to="/Members" className="btn btn-warning btn-sm mx-5 mt-2 px-2">
-        <i className="fa-solid fa-arrow-left-long px-2"></i> back
+      <Link to="/members" className="btn btn-warning btn-sm mx-5 mt-2 px-2">
+        <i className="fa-solid fa-arrow-left-long px-2"></i> Back
       </Link>
 
-      <form className="row g-3 p-4 mt-0" onSubmit={(e) => onSubmit(e)}>
+      <form className="row g-3 p-4 mt-0" onSubmit={onSubmit}>
         <div className="row d-flex justify-content-center">
           <div className="col-md-3 mb-3">
-            <label for="name" className="form-label">
+            <label htmlFor="name" className="form-label">
               Name
             </label>
             <input
@@ -81,8 +81,8 @@ const Updatemember = () => {
             />
           </div>
 
-          <div className="col-md-3 ">
-            <label for="email" className="form-label">
+          <div className="col-md-3">
+            <label htmlFor="email" className="form-label">
               Email
             </label>
             <input
@@ -96,7 +96,7 @@ const Updatemember = () => {
           </div>
 
           <div className="col-md-3">
-            <label for="contact" className="form-label">
+            <label htmlFor="contact" className="form-label">
               Contact
             </label>
             <input
@@ -112,7 +112,7 @@ const Updatemember = () => {
 
         <div className="row d-flex justify-content-center mb-3">
           <div className="col-md-3">
-            <label for="dob" className="form-label">
+            <label htmlFor="dob" className="form-label">
               DOB
             </label>
             <input
@@ -126,7 +126,7 @@ const Updatemember = () => {
           </div>
 
           <div className="col-md-3">
-            <label for="username" className="form-label">
+            <label htmlFor="username" className="form-label">
               Username
             </label>
             <input
@@ -141,7 +141,7 @@ const Updatemember = () => {
           </div>
 
           <div className="col-md-3">
-            <label for="password" className="form-label">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
@@ -158,7 +158,7 @@ const Updatemember = () => {
 
         <div className="row d-flex justify-content-center mb-3">
           <div className="col-md-5">
-            <label for="city" className="form-label">
+            <label htmlFor="city" className="form-label">
               City
             </label>
             <input
@@ -172,7 +172,7 @@ const Updatemember = () => {
           </div>
 
           <div className="col-md-4">
-            <label for="state" className="form-label">
+            <label htmlFor="state" className="form-label">
               State
             </label>
             <input
@@ -188,14 +188,14 @@ const Updatemember = () => {
 
         <div className="row d-flex justify-content-center mb-3">
           <div className="col-md-5">
-            <label for="state" className="form-label">
+            <label htmlFor="planName" className="form-label">
               Plan Type
             </label>
             <input
               type="text"
               className="form-control"
-              id="state"
-              name="state"
+              id="planName"
+              name="planName"
               value={planName}
               onChange={(e) => setPlanName(e.target.value)}
               disabled
@@ -203,14 +203,14 @@ const Updatemember = () => {
           </div>
 
           <div className="col-md-4">
-            <label for="insuredAmount" className="form-label">
+            <label htmlFor="insuredAmount" className="form-label">
               Insured Amount
             </label>
             <input
               type="number"
               className="form-control"
               id="insuredAmount"
-              name={insuredAmount}
+              name="insuredAmount"
               value={insuredAmount}
               onChange={(e) => setInsuredAmount(e.target.value)}
               disabled
@@ -228,4 +228,4 @@ const Updatemember = () => {
   );
 };
 
-export default Updatemember;
+export default UpdateMember;

@@ -10,8 +10,12 @@ const Claims = () => {
   }, []);
 
   const loadClaims = async () => {
-    const result = await axios.get("http://localhost:8080/claim/all");
-    setClaims(result.data);
+    try {
+      const response = await axios.get("http://localhost:8080/claim/all");
+      setClaims(response.data);
+    } catch (error) {
+      console.error("Error fetching claims:", error);
+    }
   };
 
   return (
@@ -24,31 +28,27 @@ const Claims = () => {
           <table className="table table-striped shadow text-center">
             <thead className="table-dark">
               <tr>
-                <td scope="col">Claim ID</td>
-                <td scope="col">Member ID</td>
-                <td scope="col">Member Name</td>
-                <td scope="col">Plan Type</td>
-                <td scope="col">Request Date</td>
-                <td scope="col">Claim Amount</td>
-                <td scope="col">Status</td>
+                <th scope="col">Claim ID</th>
+                <th scope="col">Member ID</th>
+                <th scope="col">Member Name</th>
+                <th scope="col">Plan Type</th>
+                <th scope="col">Request Date</th>
+                <th scope="col">Claim Amount</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
-              {claims.map((claim, index) => {
-                return (
-                  <tr>
-                    <th scope="row" key={index}>
-                      {claim.claimId}
-                    </th>
-                    <td>{claim.member.memberId}</td>
-                    <td>{claim.member.memberName}</td>
-                    <td>{claim.member.plan.planName}</td>
-                    <td>{claim.requestDate}</td>
-                    <td>{claim.claimAmount}</td>
-                    <td className="fst-italic">{claim.claimStatus}</td>
-                  </tr>
-                );
-              })}
+              {claims.map((claim, index) => (
+                <tr key={index}>
+                  <td>{claim.claimId}</td>
+                  <td>{claim.member.memberId}</td>
+                  <td>{claim.member.memberName}</td>
+                  <td>{claim.member.plan.planName}</td>
+                  <td>{claim.requestDate}</td>
+                  <td>{claim.claimAmount}</td>
+                  <td className="fst-italic">{claim.claimStatus}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </section>

@@ -6,19 +6,19 @@ import { useNavigate } from "react-router-dom";
 const ClaimRequest = () => {
   let navigate = useNavigate();
 
-  const [memberName, setMemberName] = useState();
-  const [memberId, setMemberId] = useState();
-  const [planType, setPlanType] = useState();
-  const [requestDate, setRequestDate] = useState();
-  const [claimAmount, setClaimAmount] = useState();
-  const [insuredAmount, setInsuredAmount] = useState();
+  const [memberName, setMemberName] = useState("");
+  const [memberId, setMemberId] = useState("");
+  const [planType, setPlanType] = useState("");
+  const [requestDate, setRequestDate] = useState("");
+  const [claimAmount, setClaimAmount] = useState("");
+  const [insuredAmount, setInsuredAmount] = useState("");
   const [search, setSearch] = useState("");
   const [maxClaimAmount, setMaxClaimAmount] = useState("");
 
   useEffect(() => {
     fetchData();
-
     clearData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   const clearData = () => {
@@ -32,15 +32,22 @@ const ClaimRequest = () => {
   };
 
   const fetchData = async () => {
-    const result = await axios.get(
-      `http://localhost:8080/api/member/${search}`
-    );
+    if (search === "") return; // Don't fetch if search is empty
 
-    setMemberId(result.data.memberId);
-    setMemberName(result.data.memberName);
-    setPlanType(result.data.plan.planName);
-    setInsuredAmount(result.data.plan.insuredAmount);
-    setMaxClaimAmount("Rs. 700000");
+    try {
+      const result = await axios.get(
+        `http://localhost:8080/api/member/${search}`
+      );
+
+      const { memberId, memberName, plan } = result.data;
+      setMemberId(memberId);
+      setMemberName(memberName);
+      setPlanType(plan.planName);
+      setInsuredAmount(plan.insuredAmount);
+      setMaxClaimAmount("Rs. 700000");
+    } catch (error) {
+      console.error("Error fetching member data:", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,8 +61,12 @@ const ClaimRequest = () => {
       },
     };
 
-    await axios.post("http://localhost:8080/claim/add", obj);
-    navigate("/claims");
+    try {
+      await axios.post("http://localhost:8080/claim/add", obj);
+      navigate("/claims");
+    } catch (error) {
+      console.error("Error submitting claim:", error);
+    }
   };
 
   return (
@@ -66,14 +77,14 @@ const ClaimRequest = () => {
 
         <section className="search-bar">
           <form
-            className=" d-flex justify-content-center col-md-3 mx-auto mt-4"
+            className="d-flex justify-content-center col-md-3 mx-auto mt-4"
             onSubmit={(e) => e.preventDefault()}
           >
             <input
               className="form-control py-2 rounded-pill shadow text-center"
               type="number"
               placeholder="Enter member id...   🔍"
-              id="search"
+              value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </form>
@@ -81,8 +92,8 @@ const ClaimRequest = () => {
 
         <section className="row g-3 p-4 mt-2">
           <div className="row d-flex justify-content-center mb-2">
-            <div className="col-md-2 ">
-              <label for="name" className="form-label">
+            <div className="col-md-2">
+              <label htmlFor="name" className="form-label">
                 Member Id
               </label>
               <input
@@ -94,55 +105,53 @@ const ClaimRequest = () => {
               />
             </div>
             <div className="col-md-5 mb-2">
-              <label for="name" className="form-label">
+              <label htmlFor="memberName" className="form-label">
                 Member Name
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="name"
+                id="memberName"
                 value={memberName}
                 disabled
               />
             </div>
 
-            <div className="row d-flex justify-content-center mb-2">
-              <div className="col-md-4">
-                <label for="planType" className="form-label">
-                  Insurance Type
-                </label>
+            <div className="col-md-4">
+              <label htmlFor="planType" className="form-label">
+                Insurance Type
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="planType"
+                value={planType}
+                disabled
+              />
+            </div>
+
+            <div className="col-md-3">
+              <label htmlFor="insuredAmount" className="form-label">
+                Insured Amount
+              </label>
+              <div className="input-group has-validation">
+                <span className="input-group-text" id="inputGroupPrepend">
+                  ₹
+                </span>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
-                  id="planType"
-                  value={planType}
+                  id="insuredAmount"
+                  value={insuredAmount}
                   disabled
                 />
-              </div>
-
-              <div className="col-md-3">
-                <label for="insuredAmount" className="form-label">
-                  Insured Amount
-                </label>
-                <div class="input-group has-validation">
-                  <span class="input-group-text" id="inputGroupPrepend">
-                    ₹
-                  </span>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="insuredAmount"
-                    value={insuredAmount}
-                    disabled
-                  />
-                </div>
               </div>
             </div>
           </div>
 
           <div className="row d-flex justify-content-center mb-2">
             <div className="col-md-3">
-              <label for="date" className="form-label">
+              <label htmlFor="date" className="form-label">
                 Request Date
               </label>
               <input
@@ -154,12 +163,12 @@ const ClaimRequest = () => {
               />
             </div>
 
-            <div className="col-md-4 mb-2">
-              <label for="amount" className="form-label">
+            <div className="col-md-4">
+              <label htmlFor="amount" className="form-label">
                 Claim Amount
               </label>
-              <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">
+              <div className="input-group has-validation">
+                <span className="input-group-text" id="inputGroupPrepend">
                   ₹
                 </span>
                 <input
@@ -173,23 +182,21 @@ const ClaimRequest = () => {
             </div>
           </div>
 
-          <div className="row d-flex justify-content-center mb-2">
-            <div className="col-md-3">
-              <label for="maxAmount" className="form-label">
-                Max Claimable Amount
-              </label>
-              <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">
-                  ₹
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="maxAmount"
-                  value={maxClaimAmount}
-                  disabled
-                />
-              </div>
+          <div className="col-md-3">
+            <label htmlFor="maxAmount" className="form-label">
+              Max Claimable Amount
+            </label>
+            <div className="input-group has-validation">
+              <span className="input-group-text" id="inputGroupPrepend">
+                ₹
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                id="maxAmount"
+                value={maxClaimAmount}
+                disabled
+              />
             </div>
           </div>
 

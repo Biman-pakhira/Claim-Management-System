@@ -9,15 +9,20 @@ const Members = () => {
 
   useEffect(() => {
     loadMembers();
-  }, [members]);
+  }, []); // Load members only once on component mount
 
   const loadMembers = async () => {
-    const result = await axios.get("http://localhost:8080/api/member/all");
-    setMembers(result.data);
+    try {
+      const result = await axios.get("http://localhost:8080/api/member/all");
+      setMembers(result.data);
+    } catch (error) {
+      console.error("Error loading members:", error);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // You can implement search logic here if needed
   };
 
   return (
@@ -28,14 +33,14 @@ const Members = () => {
 
         <section className="search-bar">
           <form
-            className=" d-flex justify-content-center col-md-4 mx-auto my-4"
+            className="d-flex justify-content-center col-md-4 mx-auto my-4"
             onSubmit={handleSubmit}
           >
             <input
               className="form-control py-2 rounded-pill shadow text-center"
               type="search"
-              placeholder="Search member...  🔍"
-              id="search"
+              placeholder="Search member... 🔍"
+              value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </form>
@@ -45,44 +50,40 @@ const Members = () => {
           <table className="table table-striped shadow text-center">
             <thead className="table-dark">
               <tr>
-                <td scope="col">Member Id</td>
-                <td scope="col">Member Name</td>
-                <td scope="col">Address</td>
-                <td scope="col">Email</td>
-                <td scope="col">Phone</td>
-                <td scope="col">Insurance Type</td>
-                <td scope="col">Insured Amount</td>
-                <td scopr="col">Action</td>
+                <th scope="col">Member Id</th>
+                <th scope="col">Member Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Insurance Type</th>
+                <th scope="col">Insured Amount</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               {members
-                .filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.memberName.toLowerCase().includes(search);
-                })
-                .map((member, index) => {
-                  return (
-                    <tr key={index}>
-                      <th scope="row">{member.memberId}</th>
-                      <td>{member.memberName}</td>
-                      <td>{member.state}</td>
-                      <td>{member.emailId}</td>
-                      <td>{member.contactNo}</td>
-                      <td>{member.plan.planName}</td>
-                      <td>{member.plan.insuredAmount}</td>
-                      <td>
-                        <Link
-                          to={`/updateMember/${member.memberId}`}
-                          className="btn btn-warning btn-sm"
-                        >
-                          Update
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
+                .filter((item) =>
+                  item.memberName.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((member) => (
+                  <tr key={member.memberId}>
+                    <td>{member.memberId}</td>
+                    <td>{member.memberName}</td>
+                    <td>{member.address}</td>
+                    <td>{member.email}</td>
+                    <td>{member.phone}</td>
+                    <td>{member.insuranceType}</td>
+                    <td>{member.insuredAmount}</td>
+                    <td>
+                      <Link
+                        to={`/updateMember/${member.memberId}`}
+                        className="btn btn-warning btn-sm"
+                      >
+                        Update
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </section>
