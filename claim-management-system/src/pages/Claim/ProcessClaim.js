@@ -40,7 +40,7 @@ const ProcessClaim = () => {
     };
 
     fetchDataWrapper();
-  }, [search]); // Only run effect when 'search' changes
+  }, [search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +57,6 @@ const ProcessClaim = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Perform any additional actions on search submit if needed
   };
 
   return (
