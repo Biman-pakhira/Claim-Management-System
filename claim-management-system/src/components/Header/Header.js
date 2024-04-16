@@ -3,7 +3,6 @@ import "./Header.css";
 
 const Navbar = () => {
   const handleLogout = () => {
-    // Logic to handle logout
     console.log("Logging out...");
   };
 

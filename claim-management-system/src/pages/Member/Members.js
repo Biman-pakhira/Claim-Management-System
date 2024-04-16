@@ -9,7 +9,7 @@ const Members = () => {
 
   useEffect(() => {
     loadMembers();
-  }, []); // Load members only once on component mount
+  }, []);
 
   const loadMembers = async () => {
     try {
@@ -22,7 +22,6 @@ const Members = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can implement search logic here if needed
   };
 
   return (

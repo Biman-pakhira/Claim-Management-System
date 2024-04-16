@@ -18,7 +18,6 @@ const ClaimRequest = () => {
   useEffect(() => {
     fetchData();
     clearData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   const clearData = () => {
@@ -32,7 +31,7 @@ const ClaimRequest = () => {
   };
 
   const fetchData = async () => {
-    if (search === "") return; // Don't fetch if search is empty
+    if (search === "") return; 
 
     try {
       const result = await axios.get(
