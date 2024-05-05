@@ -43,7 +43,7 @@ The Claim Management System is a web-based application that allows users to mana
 1. **Clone the repository**
 
    ```bash
-   git clone https://biman-pakhira.github.io/eCommerce-Website-Project/
+   git clone git@github.com:Biman-pakhira/Claim-Management-System.git
    ```
 2. **Change the Directory**
 
