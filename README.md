@@ -33,13 +33,25 @@ The Claim Management System is a web-based application that allows users to mana
 - View and search through existing claims
 - Responsive design for mobile and desktop browsers
 
-## Getting Started
 
-To get a local copy up and running follow these simple steps.
+### Prerequisites
 
-## Installation
+- Node.js (npm)
+
+### Installation
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/Biman-pakhira/Claim-Management-System-main
+   git clone https://biman-pakhira.github.io/eCommerce-Website-Project/
+   ```
+2. **Change the Directory**
+
+   ```bash
+    cd your Directory
+   ```
+3. **Run this Project**
+
+   ```bash
+    npm start
+   ```
