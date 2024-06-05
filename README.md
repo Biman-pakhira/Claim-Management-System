@@ -9,9 +9,7 @@ This is a Claim Management System built with React and Bootstrap 5 for the front
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+  
 
 ## About
 
@@ -26,12 +24,20 @@ The Claim Management System is a web-based application that allows users to mana
 
 ## Features
 
-- User authentication (login, logout)
-- Dashboard for an overview of claims
-- Create new claims with relevant details
-- Update existing claims
-- View and search through existing claims
-- Responsive design for mobile and desktop browsers
+- ### User authentication (login, logout)
+    <img src = "Img1.png">
+    <img src = "Img2.png">
+- ### Dashboard for an overview of claims
+    <img src = "">
+- ### Create new claims with relevant details
+    <img src = "">
+- ### Update existing claims
+    <img src = "">
+- ### View and search through existing claims
+    <img src = "">
+- ### Responsive design for mobile and desktop browsers
+    <img src = "">
+
 
 
 ### Prerequisites
