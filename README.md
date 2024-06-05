@@ -36,7 +36,7 @@ The Claim Management System is a web-based application that allows users to mana
 - ### View and search through existing claims
     <img src = "images/SearchExistingMembers.png">
 - ### Responsive design for mobile and desktop browsers
-    <img src = "">
+    <img src = "images/MobileView.jpg">
 
 
 
