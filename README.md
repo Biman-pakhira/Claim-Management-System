@@ -24,17 +24,17 @@ The Claim Management System is a web-based application that allows users to mana
 
 ## Features
 
-- ### User authentication (login, logout)
-    <img src = "Img1.png">
-    <img src = "Img2.png">
+- ### User authentication (login, SignUp, log Out)
+    <img src = "images/Img1.png">
+    <img src = "images/Img2.png">
 - ### Dashboard for an overview of claims
-    <img src = "">
+    <img src = "images/Img3.png">
 - ### Create new claims with relevant details
-    <img src = "">
-- ### Update existing claims
-    <img src = "">
+    <img src = "images/NewClaim.png">
+    <img src = "images/NewClaim2.png">
+
 - ### View and search through existing claims
-    <img src = "">
+    <img src = "images/SearchExistingMembers.png">
 - ### Responsive design for mobile and desktop browsers
     <img src = "">
 
