@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import "./Claim.css";
 import { useNavigate } from "react-router-dom";
@@ -15,12 +15,7 @@ const ClaimRequest = () => {
   const [search, setSearch] = useState("");
   const [maxClaimAmount, setMaxClaimAmount] = useState("");
 
-  useEffect(() => {
-    fetchData();
-    clearData();
-  }, [search]);
-
-  const clearData = () => {
+  const clearData = useCallback(() => {
     if (search === "") {
       setMaxClaimAmount("");
       setMemberName("");
@@ -28,10 +23,10 @@ const ClaimRequest = () => {
       setPlanType("");
       setInsuredAmount("");
     }
-  };
+  }, [search]);
 
-  const fetchData = async () => {
-    if (search === "") return; 
+  const fetchData = useCallback(async () => {
+    if (search === "") return;
 
     try {
       const result = await axios.get(
@@ -47,7 +42,12 @@ const ClaimRequest = () => {
     } catch (error) {
       console.error("Error fetching member data:", error);
     }
-  };
+  }, [search]);
+
+  useEffect(() => {
+    fetchData();
+    clearData();
+  }, [search, fetchData, clearData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

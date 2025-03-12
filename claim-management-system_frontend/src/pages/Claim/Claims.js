@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Claim.css";
 import axios from "axios";
 
 const Claims = () => {
   const [claims, setClaims] = useState([]);
 
-  useEffect(() => {
-    loadClaims();
-  }, []);
-
-  const loadClaims = async () => {
+  const loadClaims = useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:8080/claim/all");
       setClaims(response.data);
     } catch (error) {
       console.error("Error fetching claims:", error);
     }
-  };
+  }, []); 
 
+  useEffect(() => {
+    loadClaims();
+  }, [loadClaims]); 
   return (
     <div className="container">
       <div className="all-claims">
